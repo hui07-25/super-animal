@@ -1,3 +1,6 @@
+import { questions } from './data/questions.js';
+import { animalTypes } from './data/animals.js';
+
 const { createApp } = Vue;
 
 createApp({
@@ -6,8 +9,8 @@ createApp({
             currentPage: 'start',
             answers: {},
             questions: [],
-            allQuestions: [],
-            animalTypes: [],
+            allQuestions: questions,
+            animalTypes: animalTypes,
             result: null
         };
     },
@@ -16,89 +19,10 @@ createApp({
             return Object.keys(this.answers).length;
         }
     },
-    created() {
-        this.initQuestions();
-        this.initAnimalTypes();
-    },
     mounted() {
         this.shuffleQuestions();
     },
     methods: {
-        initQuestions() {
-            this.allQuestions = [
-                { id: 1, text: '深夜突然饿了，冰箱里只有一个苹果和一包方便面，你会', options: [
-                    { label: 'A. 吃苹果，健康最重要', value: 'A' },
-                    { label: 'B. 煮方便面，管它健不健康', value: 'B' },
-                    { label: 'C. 都不吃，继续饿着睡觉', value: 'C' }
-                ]},
-                { id: 2, text: '如果可以拥有一种超能力，你希望是', options: [
-                    { label: 'A. 读心术，知道别人在想什么', value: 'A' },
-                    { label: 'B. 隐身术，想去哪就去哪', value: 'B' },
-                    { label: 'C. 时间暂停，多睡会儿觉', value: 'C' }
-                ]},
-                { id: 3, text: '朋友约你去蹦极，你的第一反应是', options: [
-                    { label: 'A. 太刺激了！马上答应', value: 'A' },
-                    { label: 'B. 让我想想...可能不去', value: 'B' },
-                    { label: 'C. 开玩笑吧？绝对不去', value: 'C' }
-                ]},
-                { id: 4, text: '你更喜欢哪种旅行方式', options: [
-                    { label: 'A. 提前做好攻略，按计划行动', value: 'A' },
-                    { label: 'B. 随便走走，遇到什么算什么', value: 'B' },
-                    { label: 'C. 跟团游，省心省力', value: 'C' }
-                ]},
-                { id: 5, text: '如果中了彩票大奖，你会', options: [
-                    { label: 'A. 立刻辞职，环游世界', value: 'A' },
-                    { label: 'B. 存起来，该干嘛干嘛', value: 'B' },
-                    { label: 'C. 分给家人朋友一起花', value: 'C' }
-                ]}
-            ];
-            
-            for(let i = 6; i <= 50; i++) {
-                this.allQuestions.push({
-                    id: i,
-                    text: `测试题目 ${i}`,
-                    options: [
-                        { label: 'A. 选项A', value: 'A' },
-                        { label: 'B. 选项B', value: 'B' },
-                        { label: 'C. 选项C', value: 'C' }
-                    ]
-                });
-            }
-        },
-        initAnimalTypes() {
-            this.animalTypes = [
-                {
-                    name: '狼',
-                    code: 'WOLF',
-                    emoji: '🐺',
-                    quote: '独行的王者，团队的领袖',
-                    shortDesc: '你具有强大的领导力和独立性，既能独当一面，也能带领团队。目标明确，执行力强。',
-                    description: '狼型人格是天生的领导者。在现实中，狼以其卓越的团队协作和狩猎策略闻名。你目标明确，执行力强，在团队中自然成为核心人物。',
-                    mystical: {
-                        mythology: '🏛️ 在北欧神话中，芬里尔巨狼象征着原始力量与野性；罗马神话中的母狼哺育了罗马建立者。',
-                        astrology: '⭐ 你的星座特质融合了白羊座的勇气、狮子座的领导力和天蝎座的战略思维。',
-                        tarot: '🔮 对应塔罗牌"力量"牌，象征内在力量的掌控和野性与理性的平衡。',
-                        celestial: '🌟 守护星体是火星，代表战斗精神；幸运数字是1和8。'
-                    },
-                    compatibility: '🤝 与海豚型人格搭配会带来意想不到的好运！海豚的智慧与你的力量结合，能创造出完美的领导团队。'
-                },
-                {
-                    name: '猫',
-                    code: 'CAT',
-                    emoji: '🐱',
-                    quote: '优雅的独行者，神秘的观察家',
-                    shortDesc: '你独立自主，有自己的节奏和空间需求。神秘优雅，善于观察。',
-                    description: '猫型人格是优雅的独立主义者。你需要个人空间，不喜欢被束缚，但一旦信任某人，会展现出温柔的一面。',
-                    mystical: {
-                        mythology: '🏺 在古埃及神话中，猫是神圣动物，女神巴斯特以猫为化身，象征保护与优雅。',
-                        astrology: '🌙 你融合了处女座的细腻、天秤座的优雅和水瓶座的独立。',
-                        tarot: '🔮 对应"隐士"牌，代表内省、智慧和独立思考的能力。',
-                        celestial: '✨ 守护星体是月亮，象征直觉与神秘；幸运数字是3和9。'
-                    },
-                    compatibility: '💫 与狐狸型人格最为契合！你们都聪明独立，能够互相理解对方的需要。'
-                }
-            ];
-        },
         shuffleQuestions() {
             const shuffled = [...this.allQuestions].sort(() => Math.random() - 0.5);
             this.questions = shuffled.slice(0, 31).map((q, index) => ({
@@ -139,14 +63,34 @@ createApp({
             
             const total = scores.A + scores.B + scores.C;
             const aRatio = scores.A / total;
-            const consistency = (Math.max(scores.A, scores.B, scores.C) - Math.min(scores.A, scores.B, scores.C)) / total;
+            const bRatio = scores.B / total;
+            const cRatio = scores.C / total;
             
-            const animal = aRatio > 0.5 ? this.animalTypes[0] : this.animalTypes[1];
+            const maxScore = Math.max(scores.A, scores.B, scores.C);
+            const minScore = Math.min(scores.A, scores.B, scores.C);
+            const consistency = (maxScore - minScore) / total;
+            
+            // 计算每种动物的匹配分数
+            const animalScores = this.animalTypes.map((animal, index) => {
+                let score = 0;
+                
+                // 根据不同的答题模式匹配不同的动物
+                if (index === 0) score = aRatio * 100 + (scores.A > 20 ? 25 : 0); // 狼
+                else if (index === 1) score = cRatio * 90 + (scores.C > 15 ? 20 : 0); // 猫
+                else score = Math.random() * 50 + 30; // 其他动物
+                
+                return { animal, score };
+            });
+            
+            // 找出得分最高的动物
+            animalScores.sort((a, b) => b.score - a.score);
+            const topAnimal = animalScores[0];
+            
             const matchRate = Math.min(96, Math.max(75, Math.floor(80 + consistency * 20 + Math.random() * 10)));
             const accuracy = Math.floor(8 + consistency * 5 + Math.random() * 3);
             
             return {
-                ...animal,
+                ...topAnimal.animal,
                 matchRate: matchRate,
                 accuracy: Math.min(15, accuracy)
             };
@@ -161,14 +105,17 @@ createApp({
     },
     template: `
         <div class="container">
+            <!-- 开始页面 -->
             <div v-if="currentPage === 'start'" id="startPage" class="page">
                 <h1 class="title">🦁 动物灵魂测试 🦊</h1>
                 <p class="subtitle">探索你内心深处的动物本能</p>
                 <button class="start-btn" @click="startTest">🐾 开启探索之旅</button>
-                <p class="author">灵感来源：B站@蚂蚁儿串儿</p>
-                <p class="credit">▸ 发现真实的自己</p>
+                <p class="author">来自：B站@阿辉泰酷辣</p>
+                <p class="credit">感谢灵感提供者：玲玲</p>
+                <p class="disclaimer">▸ 娱乐为主，如有雷同纯属巧合</p>
             </div>
 
+            <!-- 问题页面 -->
             <div v-if="currentPage === 'question'" class="page">
                 <div class="progress-bar">
                     <span class="progress-text">🐾 探索进度：{{ progress }} / 31</span>
@@ -201,6 +148,7 @@ createApp({
                 </div>
             </div>
 
+            <!-- 结果页面 -->
             <div v-if="currentPage === 'result' && result" class="page">
                 <div class="result-container">
                     <div class="result-left">
@@ -227,7 +175,7 @@ createApp({
                     <p class="full-description">{{ result.description }}</p>
                 </div>
 
-                <div class="mystical-section">
+                <div class="mystical-section" v-if="result.mystical">
                     <h4>🌟 神秘学解读</h4>
                     <div class="mystical-content">
                         <p>{{ result.mystical.mythology }}</p>
@@ -237,7 +185,7 @@ createApp({
                     </div>
                 </div>
 
-                <div class="compatibility-section">
+                <div class="compatibility-section" v-if="result.compatibility">
                     <h4>💕 性格相性与运势</h4>
                     <div class="compatibility-content">
                         <p>{{ result.compatibility }}</p>
