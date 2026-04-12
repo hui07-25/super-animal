@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBTI性格测试 - 发现你的动物灵魂</title>
+    <title>动物灵魂测试 - 发现你的动物本能</title>
     <style>
         * {
             margin: 0;
@@ -344,8 +344,191 @@
     </style>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <!-- 开始页面 -->
+        <div v-if="currentPage === 'start'" class="container">
+            <div class="page">
+                <h1 class="title">🦁 动物灵魂测试 🦊</h1>
+                <p class="subtitle">探索你内心深处的动物本能</p>
+                <button class="start-btn" @click="startTest">🐾 开启探索之旅</button>
+                <p class="author">灵感来源：B站@蚂蚁儿串儿</p>
+                <p class="credit">▸ 发现真实的自己</p>
+            </div>
+        </div>
+
+        <!-- 问题页面 -->
+        <div v-if="currentPage === 'question'" class="container">
+            <div class="page">
+                <div class="progress-bar">
+                    <span class="progress-text">🐾 探索进度：{{ progress }} / 31</span>
+                </div>
+                
+                <div class="question-card" v-for="q in questions" :key="q.id">
+                    <div class="question-header">
+                        <span class="question-number">第 {{ q.id }} 题</span>
+                        <span class="question-status">性格维度已隐藏</span>
+                    </div>
+                    <div class="question-text">{{ q.text }}</div>
+                    <div class="options">
+                        <div 
+                            v-for="opt in q.options" 
+                            :key="opt.value"
+                            class="option"
+                            :class="{ selected: isSelected(q.id, opt.value) }"
+                            @click="selectOption(q.id, opt.value)">
+                            <span class="option-label">{{ opt.label }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-section">
+                    <p class="quote">🌟 完成所有问题，才能揭晓你的动物灵魂</p>
+                    <div class="button-group">
+                        <button class="secondary-btn" @click="goBack">🏠 返回首页</button>
+                        <button class="primary-btn" @click="showResult">✨ 揭晓我的动物灵魂</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果页面 -->
+        <div v-if="currentPage === 'result' && result" class="container">
+            <div class="page">
+                <div class="result-container">
+                    <div class="result-left">
+                        <h2>你的动物灵魂是：</h2>
+                        <h1 class="animal-name">{{ result.name }}</h1>
+                        <h1 class="animal-code">{{ result.code }}</h1>
+                        <div class="animal-image">{{ result.emoji }}</div>
+                        <p class="animal-quote">{{ result.quote }}</p>
+                    </div>
+                    
+                    <div class="result-right">
+                        <h3>你的灵魂类型</h3>
+                        <h1>{{ result.code }}（{{ result.name }}）</h1>
+                        <div class="match-info">
+                            <span>🎯 灵魂契合度 {{ result.matchRate }}%</span>
+                            <span>⭐ 特质命中 {{ result.accuracy }}/15 项</span>
+                        </div>
+                        <p class="short-desc">{{ result.shortDesc }}</p>
+                    </div>
+                </div>
+
+                <div class="description-section">
+                    <h3>🔮 你的动物灵魂解读</h3>
+                    <p class="full-description">{{ result.description }}</p>
+                </div>
+
+                <button class="secondary-btn" @click="restart">🔄 重新探索</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.prod.js"></script>
-    <script src="./app.js"></script>
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    currentPage: 'start',
+                    answers: {},
+                    questions: [],
+                    allQuestions: [
+                        {
+                            id: 1,
+                            text: '深夜突然饿了，冰箱里只有一个苹果和一包方便面，你会',
+                            options: [
+                                { label: 'A. 吃苹果，健康最重要', value: 'A' },
+                                { label: 'B. 煮方便面，管它健不健康', value: 'B' },
+                                { label: 'C. 都不吃，继续饿着睡觉', value: 'C' }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            text: '如果可以拥有一种超能力，你希望是',
+                            options: [
+                                { label: 'A. 读心术，知道别人在想什么', value: 'A' },
+                                { label: 'B. 隐身术，想去哪就去哪', value: 'B' },
+                                { label: 'C. 时间暂停，多睡会儿觉', value: 'C' }
+                            ]
+                        },
+                        {
+                            id: 3,
+                            text: '朋友约你去蹦极，你的第一反应是',
+                            options: [
+                                { label: 'A. 太刺激了！马上答应', value: 'A' },
+                                { label: 'B. 让我想想...可能不去', value: 'B' },
+                                { label: 'C. 开玩笑吧？绝对不去', value: 'C' }
+                            ]
+                        }
+                    ],
+                    animalTypes: [
+                        {
+                            name: '狼',
+                            code: 'WOLF',
+                            emoji: '🐺',
+                            quote: '独行的王者，团队的领袖',
+                            shortDesc: '你具有强大的领导力和独立性，既能独当一面，也能带领团队。目标明确，执行力强。',
+                            description: '狼型人格是天生的领导者。你目标明确，执行力强，在团队中自然成为核心人物。'
+                        }
+                    ],
+                    result: null
+                };
+            },
+            computed: {
+                progress() {
+                    return Object.keys(this.answers).length;
+                }
+            },
+            mounted() {
+                this.shuffleQuestions();
+            },
+            methods: {
+                shuffleQuestions() {
+                    const shuffled = [...this.allQuestions].sort(() => Math.random() - 0.5);
+                    this.questions = shuffled.slice(0, 3).map((q, index) => ({
+                        ...q,
+                        id: index + 1
+                    }));
+                },
+                startTest() {
+                    this.currentPage = 'question';
+                },
+                selectOption(questionId, value) {
+                    this.answers[questionId] = value;
+                },
+                isSelected(questionId, value) {
+                    return this.answers[questionId] === value;
+                },
+                goBack() {
+                    if (confirm('🐾 确定要返回首页吗？你的探索进度将会丢失哦~')) {
+                        this.restart();
+                    }
+                },
+                showResult() {
+                    if (this.progress < 3) {
+                        alert('🦊 还有问题没回答完呢！完成所有题目才能发现你的动物灵魂~');
+                        return;
+                    }
+                    
+                    this.result = {
+                        ...this.animalTypes[0],
+                        matchRate: 88,
+                        accuracy: 12
+                    };
+                    this.currentPage = 'result';
+                    window.scrollTo(0, 0);
+                },
+                restart() {
+                    this.answers = {};
+                    this.result = null;
+                    this.currentPage = 'start';
+                    this.shuffleQuestions();
+                    window.scrollTo(0, 0);
+                }
+            }
+        }).mount('#app');
+    </script>
 </body>
 </html>
