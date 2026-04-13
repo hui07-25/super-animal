@@ -509,3 +509,90 @@ body {
         font-size: 12px;
     }
 }
+
+/* 小程序二维码区域 */
+.miniprogram-section {
+    margin-top: 40px;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(230, 126, 34, 0.1);
+}
+
+.miniprogram-section h4 {
+    font-size: 20px;
+    color: #d35400;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.miniprogram-desc {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.qrcode-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.qrcode-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 10px;
+    transition: transform 0.3s ease;
+}
+
+.qrcode-image:hover {
+    transform: scale(1.05);
+}
+
+.qrcode-tip {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .miniprogram-section {
+        margin-top: 30px;
+        padding: 25px 15px;
+    }
+    
+    .miniprogram-section h4 {
+        font-size: 18px;
+    }
+    
+    .qrcode-image {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .miniprogram-section {
+        margin-top: 25px;
+        padding: 20px 15px;
+    }
+    
+    .miniprogram-section h4 {
+        font-size: 16px;
+    }
+    
+    .miniprogram-desc {
+        font-size: 13px;
+    }
+    
+    .qrcode-image {
+        width: 160px;
+        height: 160px;
+    }
+}

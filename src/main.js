@@ -193,6 +193,15 @@ createApp({
                 </div>
 
                 <button class="secondary-btn" @click="restart">🔄 重新探索</button>
+                
+                <div class="miniprogram-section">
+                    <h4>🎮 更多亲子游戏</h4>
+                    <p class="miniprogram-desc">扫码体验更多有趣的亲子互动游戏</p>
+                    <div class="qrcode-container">
+                        <img src="src/assets/miniprogram-qrcode.jpg" alt="小程序二维码" class="qrcode-image">
+                        <p class="qrcode-tip">长按识别小程序码</p>
+                    </div>
+                </div>
             </div>
         </div>
     `
